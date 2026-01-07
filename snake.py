@@ -18,21 +18,30 @@ def verifica_margens(pos):
         return False
     else:
         return True
+    
+def gera_pos():
+    x = random.randint(0, WINDOWS_WIDTH)
+    y = random.randint(0, WINDOWS_HEIGHT)
+    return x // BLOCK * BLOCK , y // BLOCK * BLOCK
+
+def colisao(pos1, pos2):
+    return pos1 == pos2
+
 
 pygame.init()
 window = pygame.display.set_mode((WINDOWS_HEIGHT, WINDOWS_WIDTH))
 
 cobra_pos = [(POS_INICIAL_X,POS_INICIAL_Y)]
 cobra_surface = pygame.Surface((BLOCK, BLOCK))
-direcao = K_LEFT
+direcao = K_RIGHT
 
 maca_surface = pygame.Surface((BLOCK, BLOCK))
 maca_surface.fill((255,0,0))
-maca_pos = 200, 200
+maca_pos = gera_pos()
 
 
 while True:
-    pygame.time.Clock().tick(10)
+    pygame.time.Clock().tick(12)
     window.fill((0, 255, 0))
 
     for evento in pygame.event.get():
@@ -44,6 +53,9 @@ while True:
                 direcao = evento.key
 
     window.blit(maca_surface, maca_pos)
+
+    if (colisao(cobra_pos[0], maca_pos)):
+        maca_pos = gera_pos()
 
     for pos in cobra_pos:
         window.blit(cobra_surface, pos)
