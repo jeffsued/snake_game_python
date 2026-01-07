@@ -8,9 +8,17 @@ POS_INICIAL_Y = WINDOWS_HEIGHT/2 #PARA FICAR NO MEIO DA TELA
 POS_INICIAL_X = WINDOWS_WIDTH/2 #PARA FICAR NO MEIO DA TELA
 BLOCK = 10
 
+pygame.font.init()
+fonte = pygame.font.SysFont('Franklin Gothic Medium', 35, True, True)
+
+pontos = 0
+velocidade = 12
+
 def game_over():
     pygame.quit()
     quit()
+
+pygame.display.set_caption('Snake Game')
 
 #confere se a cobra ta na janela
 def verifica_margens(pos):
@@ -45,8 +53,11 @@ pedra_surface = pygame.Surface((BLOCK, BLOCK))
 pedra_surface.fill((0,0,0))
 
 while True:
-    pygame.time.Clock().tick(12)
+    pygame.time.Clock().tick(velocidade)
     window.fill((0, 255, 0))
+
+    mensagem = f'Pontos: {pontos }'
+    texto = fonte.render(mensagem, True, (255,255,255))
 
     for evento in pygame.event.get():
 
@@ -73,6 +84,9 @@ while True:
         cobra_pos.append((-10, -10))
         maca_pos = gera_pos()
         pedra_pos.append(gera_pos())
+        pontos += 1
+        if pontos % 3 ==0:
+            velocidade += 2
 
     for pos in pedra_pos:
         if colisao(cobra_pos[0], pos):
@@ -100,5 +114,5 @@ while True:
     elif direcao == K_DOWN:
         cobra_pos[0] = cobra_pos[0][0], cobra_pos[0][1] + BLOCK # movimentação para baixo
 
-
+    window.blit(texto,(420, 30))
     pygame.display.update()
