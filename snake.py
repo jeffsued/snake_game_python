@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import random
+import time
 
 WINDOWS_WIDTH = 600
 WINDOWS_HEIGHT = 600
@@ -15,6 +16,12 @@ pontos = 0
 velocidade = 12
 
 def game_over():
+    fonte = pygame.font.SysFont('arial', 50, True, True)
+    game_over = 'GAME OVER'
+    text_over = fonte.render(game_over, True, (255,255,255))
+    window.blit(text_over,(140,300))
+    pygame.display.update()
+    time.sleep(4)
     pygame.quit()
     quit()
 
