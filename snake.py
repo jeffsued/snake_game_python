@@ -33,12 +33,16 @@ window = pygame.display.set_mode((WINDOWS_HEIGHT, WINDOWS_WIDTH))
 
 cobra_pos = [(POS_INICIAL_X,POS_INICIAL_Y), (POS_INICIAL_X + BLOCK, POS_INICIAL_Y), (POS_INICIAL_X + 2 * BLOCK, POS_INICIAL_Y)]
 cobra_surface = pygame.Surface((BLOCK, BLOCK))
+cobra_surface.fill((0,0,205))
 direcao = K_LEFT
 
 maca_surface = pygame.Surface((BLOCK, BLOCK))
 maca_surface.fill((255,0,0))
 maca_pos = gera_pos()
 
+pedra_pos = []
+pedra_surface = pygame.Surface((BLOCK, BLOCK))
+pedra_surface.fill((0,0,0))
 
 while True:
     pygame.time.Clock().tick(12)
@@ -68,6 +72,12 @@ while True:
     if (colisao(cobra_pos[0], maca_pos)):
         cobra_pos.append((-10, -10))
         maca_pos = gera_pos()
+        pedra_pos.append(gera_pos())
+
+    for pos in pedra_pos:
+        if colisao(cobra_pos[0], pos):
+            game_over()
+        window.blit(pedra_surface, pos)
 
     for pos in cobra_pos:
         window.blit(cobra_surface, pos)
