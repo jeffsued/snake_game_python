@@ -31,7 +31,7 @@ def colisao(pos1, pos2):
 pygame.init()
 window = pygame.display.set_mode((WINDOWS_HEIGHT, WINDOWS_WIDTH))
 
-cobra_pos = [(POS_INICIAL_X,POS_INICIAL_Y)]
+cobra_pos = [(POS_INICIAL_X,POS_INICIAL_Y), (POS_INICIAL_X + BLOCK, POS_INICIAL_Y), (POS_INICIAL_X + 2 * BLOCK, POS_INICIAL_Y)]
 cobra_surface = pygame.Surface((BLOCK, BLOCK))
 direcao = K_RIGHT
 
@@ -45,9 +45,11 @@ while True:
     window.fill((0, 255, 0))
 
     for evento in pygame.event.get():
+
         if evento.type == QUIT:
             pygame.quit()
             quit()
+
         elif evento.type == KEYDOWN:
             if evento.key in  [K_UP, K_DOWN, K_LEFT, K_RIGHT]:
                 direcao = evento.key
@@ -55,10 +57,14 @@ while True:
     window.blit(maca_surface, maca_pos)
 
     if (colisao(cobra_pos[0], maca_pos)):
+        cobra_pos.append((-10, -10))
         maca_pos = gera_pos()
 
     for pos in cobra_pos:
         window.blit(cobra_surface, pos)
+
+    for i in range(len(cobra_pos)-1,0, -1):
+        cobra_pos[i] = cobra_pos[i - 1]
 
     if verifica_margens(cobra_pos[0]):
         game_over()
